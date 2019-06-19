@@ -1,3 +1,5 @@
+import gi
+gi.require_version('Gtk', '3.0')
 from twisted.internet import gtk3reactor
 gtk3reactor.install()
 
