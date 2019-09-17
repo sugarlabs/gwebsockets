@@ -14,7 +14,11 @@
 # limitations under the License.
 
 import logging
-from io import StringIO
+import sys
+if sys.version_info[0] < 3:
+    from StringIO import StringIO
+else:
+    from io import StringIO
 from collections import deque
 
 from gi.repository import Gio
