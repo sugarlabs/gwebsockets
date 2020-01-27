@@ -18,7 +18,7 @@ import sys
 if sys.version_info[0] < 3:
     from StringIO import StringIO
 else:
-    from io import StringIO
+    from io import BytesIO
 from collections import deque
 
 from gi.repository import Gio
@@ -62,7 +62,7 @@ class Session(GObject.GObject):
         GObject.GObject.__init__(self)
 
         self._connection = connection
-        self._request = StringIO()
+        self._request = BytesIO()
         self._message = MessageBuffer()
         self._parse_g = None
         self._ready = False
@@ -121,8 +121,8 @@ class Session(GObject.GObject):
                 else:
                     break
         else:
-            self._request.write(data.decode('utf-8'))
-            if data.decode('utf-8').endswith("\r\n\r\n"):
+            self._request.write(data)
+            if data.endswith(b'\r\n\r\n'):
                 self._do_handshake()
 
         self.read_data()

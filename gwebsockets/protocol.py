@@ -114,8 +114,8 @@ def parse_frame(buf):
         payload = b''
 
     if has_mask:
-        mask = [ord(i) for i in mask]
-        payload = [chr(ord(b) ^ mask[i % 4]) for i, b in enumerate(payload)]
+        mask = [i for i in mask]
+        payload = [(b ^ mask[i % 4]) for i, b in enumerate(payload)]
 
     yield fin, opcode, payload
 
@@ -134,8 +134,8 @@ def parse_message(buf):
 
     if opcode == OPCODE_CLOSE:
         if len(payload) >= 2:
-            close_message = "".join(payload[:2])
-            close_code = struct.unpack('!H', close_message)[0]
+            close_message = bytes(payload[:2])
+            close_code = struct.unpack('!H', close_message[:2])[0]
             yield Message(OPCODE_CLOSE, close_code, close_message)
         elif payload:
             raise WebSocketError(
@@ -172,21 +172,21 @@ def parse_message(buf):
             data.append(payload)
 
     if opcode == OPCODE_TEXT:
-        yield Message(OPCODE_TEXT, "".join(data), '')
+        yield Message(OPCODE_TEXT, bytes(data), '')
     else:
-        yield Message(OPCODE_BINARY, b''.join(data), '')
+        yield Message(OPCODE_BINARY, bytes(data), '')
 
 
 def _make_frame(message, opcode):
-    header = chr(0x80 | opcode)
+    header = bytes([0x80 | opcode])
     msg_length = len(message)
 
     if msg_length < 126:
-        header += chr(msg_length)
+        header += bytes([msg_length])
     elif msg_length < (1 << 16):
-        header += chr(126) + struct.pack('!H', msg_length)
+        header += bytes([126]) + struct.pack('!H', msg_length)
     else:
-        header += chr(127) + struct.pack('!Q', msg_length)
+        header += bytes([127]) + struct.pack('!Q', msg_length)
 
     return header + message
 
@@ -220,11 +220,10 @@ def make_message(message, binary=False):
 
 def make_handshake(request):
     request_line = request.readline()
-    if not request_line.startswith("GET"):
+    if not request_line.startswith(b'GET'):
         raise BadRequestException("The method should be GET")
 
-    message = httplib.HTTPMessage(request)
-    headers = dict(message)
+    headers = httplib.parse_headers(request)
 
     if 'websocket' != headers.get('upgrade', '').lower().strip():
         raise BadRequestException('No WebSocket UPGRADE hdr: {}'.format(
@@ -233,7 +232,7 @@ def make_handshake(request):
     if 'upgrade' not in headers.get('connection', '').lower():
         raise BadRequestException(
             'No CONNECTION upgrade hdr: {}'.format(
-                headers.get('CONNECTION')))
+                headers.get('connection')))
 
     # check supported version
     version = headers.get('sec-websocket-version')
