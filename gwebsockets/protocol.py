@@ -20,11 +20,7 @@ import base64
 import binascii
 import collections
 import hashlib
-import sys
-if sys.version_info[0] < 3:
-    import httplib
-else:
-    import http.client as httplib
+import http.client as httplib
 import struct
 
 OPCODE_CONTINUATION = 0x0

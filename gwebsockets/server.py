@@ -14,11 +14,7 @@
 # limitations under the License.
 
 import logging
-import sys
-if sys.version_info[0] < 3:
-    from StringIO import StringIO
-else:
-    from io import BytesIO
+from io import BytesIO
 from collections import deque
 
 from gi.repository import Gio
