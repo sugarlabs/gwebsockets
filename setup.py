@@ -24,7 +24,7 @@ and hence it easily integrates with the GLib mainloop.
 """
 
 classifiers = ["License :: OSI Approved :: Apache Software License",
-               "Programming Language :: Python :: 2",
+               "Programming Language :: Python :: 3",
                "Topic :: Software Development :: Libraries :: Python Modules"]
 
 
