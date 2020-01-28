@@ -50,7 +50,5 @@ setup(name="gwebsockets",
       author="James Cameron",
       author_email="quozl@laptop.org",
       url="http://github.com/sugarlabs/gwebsockets",
-      test_suite="gwebsockets.tests",
       cmdclass={"lint": LintCommand},
-      tests_require=["autobahn==0.6.5"],
       classifiers=classifiers)
