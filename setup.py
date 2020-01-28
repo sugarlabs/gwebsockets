@@ -44,7 +44,7 @@ class LintCommand(Command):
 
 setup(name="gwebsockets",
       packages=["gwebsockets"],
-      version="0.6",
+      version="0.7",
       description="GLib based websockets server",
       long_description=long_description,
       author="James Cameron",
