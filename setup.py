@@ -24,7 +24,7 @@ and hence it easily integrates with the GLib mainloop.
 """
 
 classifiers = ["License :: OSI Approved :: Apache Software License",
-               "Programming Language :: Python :: 2",
+               "Programming Language :: Python :: 3",
                "Topic :: Software Development :: Libraries :: Python Modules"]
 
 
@@ -44,13 +44,11 @@ class LintCommand(Command):
 
 setup(name="gwebsockets",
       packages=["gwebsockets"],
-      version="0.6",
+      version="0.7",
       description="GLib based websockets server",
       long_description=long_description,
-      author="Daniel Narvaez",
-      author_email="dwnarvaez@gmail.com",
-      url="http://github.com/dnarvaez/gwebsockets",
-      test_suite="gwebsockets.tests",
+      author="James Cameron",
+      author_email="quozl@laptop.org",
+      url="http://github.com/sugarlabs/gwebsockets",
       cmdclass={"lint": LintCommand},
-      tests_require=["autobahn==0.6.5"],
       classifiers=classifiers)
